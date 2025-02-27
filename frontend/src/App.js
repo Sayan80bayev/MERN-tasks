@@ -13,7 +13,8 @@ export default class App extends React.Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount() 
+  {
     axios
       .get("/api")
       .then((response) => {
