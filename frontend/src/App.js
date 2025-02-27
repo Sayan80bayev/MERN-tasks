@@ -1,55 +1,60 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./App.scss";
+import log from "./utils/logger";
+
 import AddTodo from "./components/AddTodo";
 import TodoList from "./components/TodoList";
 
-export default class App extends React.Component {
-  constructor(props) {
-    super(props);
+const App = () => {
+  const [todos, setTodos] = useState([]);
+  const [loggingEnabled, setLoggingEnabled] = useState(true);
 
-    this.state = {
-      todos: [],
-    };
-  }
+  useEffect(() => {
+    if (loggingEnabled) log.info("App mounted");
 
-  componentDidMount() {
     axios
       .get("/api")
       .then((response) => {
-        this.setState({
-          todos: response.data.data,
-        });
+        setTodos(response.data.data);
       })
-      .catch((e) => console.log("Error : ", e));
-  }
+      .catch((e) => log.warn("Error:", e));
 
-  handleAddTodo = (value) => {
+    return () => {
+      if (loggingEnabled) log.info("App unmounted");
+    };
+  }, [loggingEnabled]);
+
+  const handleAddTodo = (value) => {
     axios
       .post("/api/todos", { text: value })
       .then(() => {
-        this.setState({
-          todos: [...this.state.todos, { text: value }],
-        });
+        setTodos((prevTodos) => [...prevTodos, { text: value }]);
       })
-      .catch((e) => console.log("Error : ", e));
+      .catch((e) => log.warn("Error:", e));
   };
 
-  render() {
-    return (
-      <div className="App container">
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-xs-12 col-sm-8 col-md-8 offset-md-2">
-              <h1>Todos</h1>
-              <div className="todo-app">
-                <AddTodo handleAddTodo={this.handleAddTodo} />
-                <TodoList todos={this.state.todos} />
-              </div>
+  return (
+    <div className="App container">
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-xs-12 col-sm-8 col-md-8 offset-md-2">
+            <h1>Todos</h1>
+            <button
+              onClick={() => setLoggingEnabled((prev) => !prev)}
+              className="btn btn-primary mb-3"
+            >
+              {loggingEnabled ? "Отключить логирование" : "Включить логирование"}
+            </button>
+            <div className="todo-app">
+              <AddTodo handleAddTodo={handleAddTodo} />
+              <TodoList todos={todos} />
             </div>
           </div>
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
+
+export default App;
