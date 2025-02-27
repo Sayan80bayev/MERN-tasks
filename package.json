@@ -2,8 +2,15 @@
   "devDependencies": {
     "@commitlint/cli": "^19.7.1",
     "@commitlint/config-conventional": "^19.7.1",
+    "@eslint/js": "^9.21.0",
+    "eslint": "^9.21.0",
+    "eslint-plugin-react": "^7.37.4",
+    "globals": "^16.0.0",
     "husky": "^9.1.7",
-    "lint-staged": "^15.4.3"
+    "lint-staged": "^15.4.3",
+    "prettier": "^3.5.2",
+    "stylelint": "^16.14.1",
+    "stylelint-config-standard": "^37.0.0"
   },
   "scripts": {
     "prepare": "husky"
@@ -11,6 +18,20 @@
   "lint-staged": {
     "**/*.js": "eslint --fix",
     "**/*.ts": "eslint --fix",
-    "**/*.md": "prettier --write"
-  }
+    "**/*.{md, jsx, js, json}": "prettier --write"
+  },
+  "name": "mern-tasks",
+  "version": "1.0.0",
+  "description": "Project structure: ``` . ├── backend │   ├── Dockerfile │   ... ├── compose.yaml ├── frontend │   ├── ... │   └── Dockerfile └── README.md ```",
+  "main": "commitlint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sayan80bayev/MERN-tasks.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sayan80bayev/MERN-tasks/issues"
+  },
+  "homepage": "https://github.com/Sayan80bayev/MERN-tasks#readme"
 }
