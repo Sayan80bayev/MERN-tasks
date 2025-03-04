@@ -1,33 +1,34 @@
-import React from "react";
+import React, { useContext } from "react";
+import { Input, Button } from "antd";
+import { ThemeContext } from "../context/ThemeContext";
 
-export default class AddTodo extends React.Component {
-  handleSubmit = (e) => {
+const AddTodo = ({ handleAddTodo }) => {
+  const { theme } = useContext(ThemeContext);
+
+  const handleSubmit = (e) => {
     e.preventDefault();
     const { value } = e.target.elements.value;
     if (value.length > 0) {
-      this.props.handleAddTodo(value);
+      handleAddTodo(value);
       e.target.reset();
     }
   };
-  //test
-  render() {
-    return (
-      <form
-        noValidate
-        onSubmit={this.handleSubmit}
-        className="new-todo form-group"
-      >
-        <input
-          type="text"
-          name="value"
-          required
-          minLength={1}
-          className="form-control"
-        />
-        <button className="btn btn-primary" type="submit">
-          Add Todo
-        </button>
-      </form>
-    );
-  }
-}
+
+  return (
+    <form onSubmit={handleSubmit} className={`new-todo ${theme}`}>
+      <Input
+        type="text"
+        name="value"
+        required
+        minLength={1}
+        placeholder="Enter a task"
+        className={`todo-input ${theme}`}
+      />
+      <Button type="primary" htmlType="submit" className={`todo-button ${theme}`}>
+        Add Todo
+      </Button>
+    </form>
+  );
+};
+
+export default AddTodo;

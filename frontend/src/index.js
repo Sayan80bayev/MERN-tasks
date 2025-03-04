@@ -1,14 +1,11 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React from "react";
+import { createRoot } from "react-dom/client"; // Импортируем createRoot
+import { ThemeProvider } from "./context/ThemeContext";
+import App from "./App";
 
-import './custom.scss';
-
-ReactDOM.render(<App />, document.getElementById('root'));
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+const root = createRoot(document.getElementById("root")); // Создаём root
+root.render(
+  <ThemeProvider>
+    <App />
+  </ThemeProvider>
+);

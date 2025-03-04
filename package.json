@@ -35,6 +35,8 @@
   },
   "homepage": "https://github.com/Sayan80bayev/MERN-tasks#readme",
   "dependencies": {
-    "loglevel": "^1.9.2"
+    "antd": "^5.24.2",
+    "loglevel": "^1.9.2",
+    "sass": "^1.85.1"
   }
 }

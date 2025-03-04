@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import "./App.scss";
+import { ThemeContext } from "./context/ThemeContext";
 import log from "./utils/logger";
-
 import AddTodo from "./components/AddTodo";
 import TodoList from "./components/TodoList";
+import { Button, Switch } from "antd";
+import "antd/dist/reset.css";
+import "./App.scss";
 
 const App = () => {
   const [todos, setTodos] = useState([]);
   const [loggingEnabled, setLoggingEnabled] = useState(true);
+  const { theme, toggleTheme } = useContext(ThemeContext);
 
   useEffect(() => {
     if (loggingEnabled) log.info("App mounted");
@@ -35,24 +38,24 @@ const App = () => {
   };
 
   return (
-    <div className="App container">
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-xs-12 col-sm-8 col-md-8 offset-md-2">
-            <h1>Todos</h1>
-            <button
-              onClick={() => setLoggingEnabled((prev) => !prev)}
-              className="btn btn-primary mb-3"
-            >
-              {loggingEnabled ? "Отключить логирование" : "Включить логирование"}
-            </button>
-            <div className="todo-app">
-              <AddTodo handleAddTodo={handleAddTodo} />
-              <TodoList todos={todos} />
-            </div>
-          </div>
-        </div>
+    <div className={`App container ${theme}`}>
+      <h1>Todos</h1>
+
+      <div className="controls">
+        <Switch
+          checked={theme === "dark"}
+          onChange={toggleTheme}
+          checkedChildren="Dark"
+          unCheckedChildren="Light"
+        />
+        <Button onClick={() => setLoggingEnabled((prev) => !prev)}>
+          {loggingEnabled ? "Отключить логирование" : "Включить логирование"}
+        </Button>
       </div>
+
+      <AddTodo handleAddTodo={handleAddTodo} />
+      <br/>
+      <TodoList todos={todos} />
     </div>
   );
 };

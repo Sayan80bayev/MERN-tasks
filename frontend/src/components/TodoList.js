@@ -1,49 +1,32 @@
-import React from "react";
+import React, { useContext, useState } from "react";
+import { List } from "antd";
+import { ThemeContext } from "../context/ThemeContext";
 
-export default class TodoList extends React.Component {
-  constructor(props) {
-    super(props);
+const TodoList = ({ todos }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const { theme } = useContext(ThemeContext);
 
-    this.state = {
-      activeIndex: 0,
-    };
-  }
+  const handleActive = (index) => {
+    setActiveIndex(index);
+  };
 
-  handleActive(index) {
-    this.setState({
-      activeIndex: index,
-    });
-  }
+  return todos.length > 0 ? (
+    <List
+      bordered
+      dataSource={todos}
+      renderItem={(todo, i) => (
+        <List.Item
+          className={i === activeIndex ? "active" : ""}
+          onClick={() => handleActive(i)}
+          style={{ color: theme === "dark" ? "white" : "black" }}
+        >
+          {todo.text}
+        </List.Item>
+      )}
+    />
+  ) : (
+    <div>No Todos</div>
+  );
+};
 
-  renderTodos(todos) {
-    return (
-      <ul className="list-group">
-        {todos.map((todo, i) => (
-          <li
-            className={
-              "list-group-item cursor-pointer " +
-              (i === this.state.activeIndex ? "active" : "")
-            }
-            key={i}
-            onClick={() => {
-              this.handleActive(i);
-            }}
-          >
-            {todo.text}
-          </li>
-        ))}
-      </ul>
-    );
-  }
-
-  render() {
-    let { todos } = this.props;
-    return todos.length > 0 ? (
-      this.renderTodos(todos)
-    ) : (
-      <div className="alert alert-primary" role="alert">
-        No Todos to display
-      </div>
-    );
-  }
-}
+export default TodoList;
